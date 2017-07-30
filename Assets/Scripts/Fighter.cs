@@ -8,12 +8,8 @@ public class Fighter : MonoBehaviour {
 	public float m_maxHealth;
 	public Fist[] m_fists;
 	public float m_jukeDistance; // TODO: Affected by leg muscle?
-	public float m_punchMuscle = 10; // TODO: SCalable based on charge up time
 
-	private Animator m_animator;
 	private float m_health;
-	private string m_inputPunchR;
-	private string m_inputPunchL;
 	private string m_inputJukeF;
 	private string m_inputJukeB;
 	private Entity m_entity;
@@ -25,7 +21,6 @@ public class Fighter : MonoBehaviour {
 		InputAxisMovement2D input = GetComponent<InputAxisMovement2D>();
 		input.axisHorizontal = "Horizontal-"+m_playerNumber.ToString();
 		input.axisVertical = "Vertical-"+m_playerNumber.ToString();
-		m_animator = GetComponent<Animator>();
 		m_health = m_maxHealth;
 		m_entity = GetComponent<Entity>();
 
@@ -37,25 +32,12 @@ public class Fighter : MonoBehaviour {
 
 		gameObject.SetLayerRecursive("Player-"+m_playerNumber.ToString());
 
-		m_inputPunchR = "Punch-R-"+m_playerNumber.ToString();
-		m_inputPunchL = "Punch-L-"+m_playerNumber.ToString();
 		m_inputJukeF = "Juke-F-"+m_playerNumber.ToString();
 		m_inputJukeB = "Juke-B-"+m_playerNumber.ToString();
 	}
 
 	void Update()
 	{
-		// TODO: Hold down to charge up punch?
-		if (Input.GetButtonUp(m_inputPunchR))
-		{
-			m_animator.SetTrigger("Punch-R");
-			m_fists[0].UseMuscle(m_punchMuscle);
-		}
-		if (Input.GetButtonUp(m_inputPunchL))
-		{
-			m_animator.SetTrigger("Punch-L");
-			m_fists[1].UseMuscle(m_punchMuscle);
-		}
 		if (Input.GetButtonUp(m_inputJukeF))
 		{
 			Vector3 facingDirection = transform.Direction(Vector3.right);
@@ -79,15 +61,5 @@ public class Fighter : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		// TODO: Play damage FX
-	}
-
-	public void StartPunching(int _index)
-	{
-		m_fists[_index].m_punching = true;
-	}
-
-	public void StopPunching(int _index)
-	{
-		m_fists[_index].m_punching = false;
 	}
 }
