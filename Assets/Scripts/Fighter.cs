@@ -8,6 +8,7 @@ public class Fighter : MonoBehaviour {
 	public float m_maxHealth;
 	public Fist[] m_fists;
 	public float m_jukeDistance; // TODO: Affected by leg muscle?
+	public float m_punchMuscle = 10; // TODO: SCalable based on charge up time
 
 	private Animator m_animator;
 	private float m_health;
@@ -17,6 +18,7 @@ public class Fighter : MonoBehaviour {
 	private string m_inputJukeB;
 	private Entity m_entity;
 
+	public float health { get { return m_health; } } 
 
 	void Start ()
 	{
@@ -47,10 +49,12 @@ public class Fighter : MonoBehaviour {
 		if (Input.GetButtonUp(m_inputPunchR))
 		{
 			m_animator.SetTrigger("Punch-R");
+			m_fists[0].UseMuscle(m_punchMuscle);
 		}
 		if (Input.GetButtonUp(m_inputPunchL))
 		{
 			m_animator.SetTrigger("Punch-L");
+			m_fists[1].UseMuscle(m_punchMuscle);
 		}
 		if (Input.GetButtonUp(m_inputJukeF))
 		{
@@ -75,7 +79,6 @@ public class Fighter : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		// TODO: Play damage FX
-		Debug.Log(_damage+"Damage dealt to player "+m_playerNumber+": health = "+m_health+"/"+m_maxHealth);
 	}
 
 	public void StartPunching(int _index)
